@@ -35,11 +35,6 @@ app.use(
 
 
 
-// Root route
-// app.get('/', (req, res) => {
-//     res.send('HealthConnect Backend is running');
-//   });
-
 
 // Router usage
 app.use("/api/v1", adminRouter);
