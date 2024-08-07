@@ -7,6 +7,7 @@ import { dbConnection } from "./config/database.js";
 import { userRouter } from "./routes/user.route.js";
 import "dotenv/config";
 import expressOasGenerator from "@mickeymond/express-oas-generator";
+import mongoose from "mongoose";
 
 // Database connection
 dbConnection();
