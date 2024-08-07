@@ -5,6 +5,7 @@ import cors from "cors";
 import { adminRouter } from "./routes/admin.route.js";
 import { dbConnection } from "./config/database.js";
 import { userRouter } from "./routes/user.route.js";
+import "dotenv/config";
 
 // Database connection
 dbConnection();
