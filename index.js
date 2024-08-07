@@ -33,11 +33,12 @@ app.use(
     })
 );
 
-expressOasGenerator.handleResponses(app, {
-    alwaysServeDocs: true,
-    tags: ['admindashboard', 'hospital', 'ambulance'],
-    mongooseModels: mongoose.modelNames(),
-});
+
+
+// Root route
+app.get('/', (req, res) => {
+    res.send('HealthConnect Backend is running');
+  });
 
 
 // Router usage
@@ -45,8 +46,19 @@ app.use("/api/v1", adminRouter);
 app.use("/api/v1", userRouter);
 
 
+expressOasGenerator.handleResponses(app, {
+    alwaysServeDocs: true,
+    tags: ['admindashboard', 'hospital', 'ambulance'],
+    mongooseModels: mongoose.modelNames(),
+});
 
 
+
+// Error handling middleware
+app.use((err, req, res, next) => {
+    console.error(err.stack);
+    res.status(500).send('Something broke!');
+  });
 
 
 // Listen for incoming requests
