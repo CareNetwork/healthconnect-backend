@@ -1,6 +1,7 @@
 import express from "express";
 import MongoStore from "connect-mongo";
 import session from "express-session";
+import cors from "cors";
 import { adminRouter } from "./routes/admin.route.js";
 import { dbConnection } from "./config/database.js";
 import { userRouter } from "./routes/user.route.js";
@@ -10,6 +11,7 @@ dbConnection();
 
 // create an express app
 const app = express();
+app.use(cors({ credentials: true, origin: '*' }));
 
 // Middleware
 app.use(express.json()); // This should come before route definitions
