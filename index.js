@@ -6,6 +6,7 @@ import { adminRouter } from "./routes/admin.route.js";
 import { dbConnection } from "./config/database.js";
 import { userRouter } from "./routes/user.route.js";
 import "dotenv/config";
+import expressOasGenerator from "@mickeymond/express-oas-generator";
 
 // Database connection
 dbConnection();
@@ -22,11 +23,19 @@ app.use(
         secret: process.env.SESSION_SECRET,
         resave: false,
         saveUninitialized: true,
+
         store: MongoStore.create({
             mongoUrl: process.env.MONGO_URL,
         }),
     })
 );
+
+expressOasGenerator.handleResponses(app, {
+    alwaysServeDocs: true,
+    tags: ['admindashboard', 'hospital', 'ambulance'],
+    mongooseModels: mongoose.modelNames(),
+});
+
 
 // Router usage
 app.use("/api/v1", adminRouter);
