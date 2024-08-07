@@ -36,9 +36,9 @@ app.use(
 
 
 // Root route
-app.get('/', (req, res) => {
-    res.send('HealthConnect Backend is running');
-  });
+// app.get('/', (req, res) => {
+//     res.send('HealthConnect Backend is running');
+//   });
 
 
 // Router usage
@@ -60,6 +60,9 @@ app.use((err, req, res, next) => {
     res.status(500).send('Something broke!');
   });
 
+
+  expressOasGenerator.handleRequests();
+  app.use((req, res) => res.redirect('/api-docs/'));
 
 // Listen for incoming requests
 const PORT = process.env.PORT || 6010;
