@@ -8,7 +8,11 @@ const hospitalSchema = new Schema({
     phonenumber: { type: String, required: true },
     location: { type: String, required: true },
     servises: { type: String, enum: ['specialists', 'cardiology', 'outpatient', 'inpatient', 'cathetization', 'alied health services', 'theatre', 'radiology', 'laboratory', 'gastroscopy' ], default: 'inpatient' },
-    available: { type: Boolean, default: true },
+    bedsAvailable: { type: Number, required: true },
+    totalDoctors: { type: Number, required: true }, 
+    totalNurses: { type: Number, required: true },   
+    totalEmergencyUnits: { type: Number, required: true },
+    morgue: { type: Boolean, required: true },
     
 }, {
     timestamps: true

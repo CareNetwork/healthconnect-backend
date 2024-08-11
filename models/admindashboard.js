@@ -1,9 +1,19 @@
-import { Schema, model } from "mongoose";
-import { toJSON } from "@reis/mongoose-to-json";
+import { Schema, model, Types } from 'mongoose';
+import { toJSON } from '@reis/mongoose-to-json';
 
+// Define AdminDashboard Schema
+const adminDashboardSchema = new Schema({
+    adminAccount: { type: Types.ObjectId, ref: 'AdminAccount' },
+    hospitals: [{ type: Types.ObjectId, ref: 'Hospital' }],
+    ambulanceservice: [{ type: Types.ObjectId, ref: 'Ambulance' }],
+    recentActivities: [{ type: Types.ObjectId, ref: 'ActivityLog' }],
+    statistics: { type: Types.ObjectId, ref: 'UserVisit' }
+}, {
+    timestamps: true
+});
 
+// Add the toJSON plugin for better serialization
+adminDashboardSchema.plugin(toJSON);
 
-
-const admindashboardSchema = new Schema ({
-    
-})
+// Export the AdminDashboard model
+export const AdminDashboard = model('AdminDashboard', adminDashboardSchema);
