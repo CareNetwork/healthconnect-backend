@@ -11,7 +11,7 @@ const ambulanceServiceSchema = new Schema({
     drivercontactnumber: { type: String, required: true },
     address: { type: String, required: true },
     status: { type: String, enum: ['Available', 'On Call', 'Maintenance'], default: 'Available' },
-    assignedHospital: { type: mongoose.Schema.Types.ObjectId, ref: 'Hospital' },
+    assignedHospital: { type: Types.ObjectId, ref: 'Hospital' },
     
 }, {
     timestamps: true

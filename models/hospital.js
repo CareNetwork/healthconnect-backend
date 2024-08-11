@@ -9,9 +9,9 @@ const hospitalSchema = new Schema({
     location: { type: String, required: true },
     servises: { type: String, enum: ['specialists', 'cardiology', 'outpatient', 'inpatient', 'cathetization', 'alied health services', 'theatre', 'radiology', 'laboratory', 'gastroscopy' ], default: 'inpatient' },
     bedsAvailable: { type: Number, required: true },
-    totalDoctors: { type: Number, required: true }, 
-    totalNurses: { type: Number, required: true },   
-    totalEmergencyUnits: { type: Number, required: true },
+    totaldoctors: { type: Number, required: true }, 
+    totalnurses: { type: Number, required: true },   
+    totalemergencyUnits: { type: Number, required: true },
     morgue: { type: Boolean, required: true },
     
 }, {
