@@ -1,5 +1,5 @@
-const { Schema, model } = require('mongoose');
-const { toJSON } = require('@reis/mongoose-to-json');
+import { Schema, model } from "mongoose";
+import { toJSON } from "@reis/mongoose-to-json";
 
 const activityLogSchema = new Schema({
     userId: { type: Schema.Types.ObjectId, required: true },

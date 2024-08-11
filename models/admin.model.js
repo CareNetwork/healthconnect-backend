@@ -1,5 +1,5 @@
 import { Schema, model } from "mongoose";
-import {toJSON} from "@reis/mongoose-to-json"
+import { toJSON } from "@reis/mongoose-to-json";
 
 
 const adminSchema = new Schema({
