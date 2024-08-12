@@ -10,6 +10,8 @@ dotenv.config();
 // import expressOasGenerator from "@mickeymond/express-oas-generator";
 import expressOasGenerator from "express-oas-generator"
 import mongoose from "mongoose";
+import { ambulanceRouter } from "./routes/ambulance.route.js";
+import { hospitalRouter } from "./routes/hospital.route.js";
 
 // Database connection
 dbConnection();
@@ -39,7 +41,8 @@ app.use(
 // Router usage
 app.use("/api/v1", adminRouter);
 app.use("/api/v1", userRouter);
-
+app.use("/api/v1", hospitalRouter);
+app.use("/api/v1", ambulanceRouter);
 
 expressOasGenerator.handleResponses(app, {
     alwaysServeDocs: true,
