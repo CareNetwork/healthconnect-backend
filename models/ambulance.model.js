@@ -1,4 +1,4 @@
-import { Schema, model } from "mongoose";
+import { Schema, model, Types } from "mongoose";
 import { toJSON } from "@reis/mongoose-to-json";
 
 
@@ -12,6 +12,7 @@ const ambulanceServiceSchema = new Schema({
     address: { type: String, required: true },
     status: { type: String, enum: ['Available', 'On Call', 'Maintenance'], default: 'Available' },
     assignedHospital: { type: Types.ObjectId, ref: 'Hospital' },
+    image: { type: String, default: 'https://savefiles.org/secure/uploads/15585?shareable_link=252' }
     
 }, {
     timestamps: true

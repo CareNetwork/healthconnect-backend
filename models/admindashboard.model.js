@@ -5,7 +5,7 @@ import { toJSON } from '@reis/mongoose-to-json';
 const adminDashboardSchema = new Schema({
     adminAccount: { type: Types.ObjectId, ref: 'AdminAccount' },
     hospitals: [{ type: Types.ObjectId, ref: 'Hospital' }],
-    ambulanceservice: [{ type: Types.ObjectId, ref: 'Ambulance' }],
+    ambulanceService: [{ type: Types.ObjectId, ref: 'Ambulance' }],
     recentActivities: [{ type: Types.ObjectId, ref: 'ActivityLog' }],
     statistics: { type: Types.ObjectId, ref: 'UserVisit' }
 }, {

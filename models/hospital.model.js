@@ -12,6 +12,7 @@ const hospitalSchema = new Schema({
     totaldoctors: { type: Number, required: true }, 
     totalnurses: { type: Number, required: true },   
     totalemergencyUnits: { type: Number, required: true },
+    image: { type: String, default: 'https://savefiles.org/secure/uploads/15585?shareable_link=252' },
     morgue: { type: Boolean, required: true },
     
 }, {
