@@ -12,7 +12,9 @@ const ambulanceServiceSchema = new Schema({
     address: { type: String, required: true },
     status: { type: String, enum: ['Available', 'On Call', 'Maintenance'], default: 'Available' },
     assignedHospital: { type: Types.ObjectId, ref: 'Hospital' },
-    image: { type: String, default: 'https://savefiles.org/secure/uploads/15585?shareable_link=252' }
+    image: { type: String, default: 'https://savefiles.org/secure/uploads/15585?shareable_link=252' },
+    websiteLink: { type: String },
+    googleMapsLink: { type: String }
     
 }, {
     timestamps: true

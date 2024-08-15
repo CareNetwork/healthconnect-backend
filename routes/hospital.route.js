@@ -9,16 +9,16 @@ import { addHospital, deleteHospital, getAllHospitals, getHospital, updateHospit
 
 
  // Add a new hospital
- hospitalRouter.post('/hospitals', addHospital);
+ hospitalRouter.post('/addhospitals', addHospital);
 
 // Get all hospitals
-hospitalRouter.get('/hospitals', getAllHospitals);
+hospitalRouter.get('/getallhospitals', getAllHospitals);
 
 // Get a specific hospital
-hospitalRouter.get('/hospitals/:id', getHospital);
+hospitalRouter.get('/gethospitals/:id', getHospital);
 
 // Update a hospital
-hospitalRouter.patch('/hospitals/:id', updateHospital);
+hospitalRouter.patch('/updatehospitals/:id', updateHospital);
 
 // delete a hospital
 hospitalRouter.patch('/hospitals/:id', deleteHospital);
