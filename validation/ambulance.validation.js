@@ -9,7 +9,9 @@ export const addAmbulanceValidator = Joi.object({
     drivercontactnumber: Joi.string().required(),
     address: Joi.string().required(),
     status: Joi.string().valid('Available', 'On Call', 'Maintenance').default('Available'),
-    assignedHospital: Joi.string().optional() 
+    assignedHospital: Joi.string().optional(),
+    googleMapsLink: Joi.string().optional(),
+    websiteLink: Joi.string().optional()
 });
 
 // Joi validation schema for updating an existing ambulance
@@ -21,5 +23,8 @@ export const updateAmbulanceValidator = Joi.object({
     drivercontactnumber: Joi.string(),
     address: Joi.string(),
     status: Joi.string().valid('Available', 'On Call', 'Maintenance'),
-    assignedHospital: Joi.string().optional() 
+    assignedHospital: Joi.string().optional(),
+    googleMapsLink: Joi.string().optional(),
+    websiteLink: Joi.string().optional()
+
 });

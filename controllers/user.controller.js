@@ -2,6 +2,7 @@ import { UserModel } from "../models/user.model.js";
 import bcrypt from 'bcrypt';
 import jwt from 'jsonwebtoken';
 import { BlacklistedTokenModel } from "../models/blacklistedToken.model.js";
+import { AmbulanceServiceModel } from "../models/ambulance.model.js";
 
 
 
@@ -100,6 +101,72 @@ export const Userlogin = async (req, res) => {
         res.status(500).json({ message: "Internal server error" });
     }
 };
+
+
+// export const getAllAmbulances = async (req, res, next) => {
+//     try {
+//         const { status, assignedHospital, location, region } = req.query;
+//         let filter = {};
+
+//         if (status) filter.status = status;
+//         if (assignedHospital) filter.assignedHospital = assignedHospital;
+//         if (location) filter['assignedHospital.location'] = new RegExp(location, 'i');
+//         if (region) filter['assignedHospital.location'] = new RegExp(region, 'i');
+
+//         const defaultPopulate = {
+//             path: "assignedHospital",
+//             select: "hospitalname location phonenumber image"
+//         };
+
+//         const ambulances = await AmbulanceServiceModel.find(filter).populate(defaultPopulate);
+//         res.status(200).json(ambulances);
+//     } catch (error) {
+//         next(error);
+//     }
+// };
+
+
+// export const getAmbulance = async (req, res, next) => {
+//     try {
+//         const ambulance = await AmbulanceServiceModel.findById(req.params.id).populate('assignedHospital');
+//         if (!ambulance) {
+//             return res.status(404).json({ message: 'Ambulance not found' });
+//         }
+//         res.status(200).json(ambulance);
+//     } catch (error) {
+//         next(error);
+//     }
+// };
+
+
+
+// export const getAllHospitals = async (req, res, next) => {
+//     try {
+//         const { location, services, region } = req.query;
+//         let filter = {};
+
+//         if (location) filter.location = new RegExp(location, 'i');
+//         if (services) filter.services = services;
+//         if (region) filter.location = new RegExp(region, 'i');
+
+//         const hospitals = await HospitalModel.find(filter);
+//         res.status(200).json(hospitals);
+//     } catch (error) {
+//         next(error);
+//     }
+// };
+
+// export const getHospital = async (req, res, next) => {
+//     try {
+//         const hospital = await HospitalModel.findById(req.params.id);
+//         if (!hospital) {
+//             return res.status(404).json({ message: 'Hospital not found' });
+//         }
+//         res.status(200).json(hospital);
+//     } catch (error) {
+//         next(error);
+//     }
+// };
 
 
 

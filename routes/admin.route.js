@@ -1,6 +1,6 @@
 import { Router } from "express";
 import { logout, signup, token } from "../controllers/admin.controller.js";
-// import { iSauthenticated } from "../middlewares/auth.js"
+
 
 
 
@@ -10,6 +10,6 @@ export const adminRouter = Router();
 
 
   // Signup route 
-  adminRouter.post("/admin/signup", signup);
-  adminRouter.post("/admin/token",  token);
-  adminRouter.post("/admin/logout",  logout);
+  adminRouter.post("/signup", signup);
+  adminRouter.post("/token",  token);
+  adminRouter.post("/logout",  logout);

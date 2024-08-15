@@ -4,12 +4,24 @@ import Joi from 'joi';
 export const addHospitalValidator = Joi.object({
     hospitalname: Joi.string().required(),
     phonenumber: Joi.string().required(),
+    hospitalemail: Joi.string().email().required(),
     location: Joi.string().required(),
-    servises: Joi.string().valid(
+    services: Joi.string().valid(
         'specialists',
+        'Radiology',
+        'Gynaecology',
+        'Pediatrics',
+        'Electrocardiography',
+        'Dietetics',
+        'Physiotherapy',
+        'Ear, Nose and Throat',
+        'Renal Dialysis',
+        'Opthalmology',
+        'Neurosurgery',
         'cardiology',
         'outpatient',
         'inpatient',
+        'Spine Health',
         'cathetization',
         'alied health services',
         'theatre',
@@ -21,7 +33,9 @@ export const addHospitalValidator = Joi.object({
     totaldoctors: Joi.number().required(),
     totalnurses: Joi.number().required(),
     totalemergencyUnits: Joi.number().required(),
-    morgue: Joi.boolean().required()
+    morgue: Joi.boolean().required(),
+    websiteLink: Joi.string().optional(),
+    googleMapsLink: Joi.string().optional()
 });
 
 // Joi validation schema for updating an existing hospital

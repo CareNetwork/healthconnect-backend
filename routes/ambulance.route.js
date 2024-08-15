@@ -9,16 +9,16 @@ export const ambulanceRouter = Router();
 
 
 // Add a new ambulance
-ambulanceRouter.post('/hospitals', addAmbulance);
+ambulanceRouter.post('/ambulances', addAmbulance);
 
 // Get all ambulances
-ambulanceRouter.get('/hospitals', getAllAmbulances);
+ambulanceRouter.get('/ambulances', getAllAmbulances);
 
 // Get a specific ambulance
-ambulanceRouter.get('/hospitals/:id', getAmbulance);
+ambulanceRouter.get('/ambulances/:id', getAmbulance);
 
 // Update an ambulance
-ambulanceRouter.patch('/hospitals/:id', updateAmbulance);
+ambulanceRouter.patch('/ambulances/:id', updateAmbulance);
 
 // Delete a ambulance
-ambulanceRouter.delete('/hospitals/:id', deleteAmbulance);
+ambulanceRouter.delete('/ambulances/:id', deleteAmbulance);
