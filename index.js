@@ -45,7 +45,7 @@ app.use(
 
 // Apply admin authentication middleware
 app.use('/api/v1/admin', iSauthenticated, adminRouter);
-app.use("/api/v1", userRouter);
+app.use("/api/v1/users", userRouter);
 app.use('/api/v1/hospitals', iSauthenticated, hospitalRouter);
 app.use('/api/v1/ambulances', iSauthenticated, ambulanceRouter);
 
