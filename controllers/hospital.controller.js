@@ -112,23 +112,6 @@ export const getAllHospitals = async (req, res, next) => {
     }
 };
 
-// export const getHospital = async (req, res, next) => {
-//     try {
-//         const hospital = await HospitalModel.findById(req.params.id)
-//             .populate('totaldoctors', 'name specialization')
-//             .populate('totalnurses', 'name')
-//             .populate('ambulances', 'vehiclenumber status');
-//         if (!hospital) {
-//             return res.status(404).json({ message: 'Hospital not found' });
-//         }
-
-//         // return response
-//         res.status(200).json(hospital);
-//     } catch (error) {
-//         next(error);
-//     }
-// };
-
 
 // export const getHospital = async (req, res, next) => {
 //     try {
