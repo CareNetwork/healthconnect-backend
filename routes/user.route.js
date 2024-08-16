@@ -23,7 +23,7 @@ export const userRouter = Router();
 hospitalRouter.get('/users/hospitals', getAllHospitals);
 
 // Get a specific hospital
-hospitalRouter.get('/users/hospitals/:id', getHospital);
+hospitalRouter.get('/users/hospitals/:hospitalname', getHospital);
 
 // Get all ambulances with optional filtering
 ambulanceRouter.get('/ambulances', getAllAmbulances);
