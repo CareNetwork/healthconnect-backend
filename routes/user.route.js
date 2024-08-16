@@ -18,11 +18,11 @@ export const userRouter = Router();
   // User Login route
   userRouter.post("/login", Userlogin);
 
-//   // Get all hospitals with optional filtering
-// userRouter.get('/hospitals', getAllHospitals);
+  // Get all hospitals with optional filtering
+userRouter.get('/hospitals/getallhospitals', getAllHospitals);
 
-// // Get a specific hospital
-// userRouter.get('/hospitals/:hospitalname', getHospital);
+// Get a specific hospital
+userRouter.get('/hospitals/:hospitalname', getHospital);
 
 // Get all ambulances with optional filtering
 userRouter.get('/ambulances', getAllAmbulances);
