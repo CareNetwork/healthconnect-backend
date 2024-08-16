@@ -28,4 +28,4 @@ hospitalRouter.get('/:hospitalname', getHospital);
 hospitalRouter.patch('/updatehospitals/:id', updateHospital);
 
 // delete a hospital
-hospitalRouter.patch('/hospitals/:id', deleteHospital);
+hospitalRouter.delete('/hospitals/:id', deleteHospital);
