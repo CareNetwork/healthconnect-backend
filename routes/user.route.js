@@ -31,4 +31,4 @@ userRouter.get('/ambulances', getAllAmbulances);
 userRouter.get('/ambulances/:id', getAmbulance);
 
   // Logout route (protected)
-userRouter.post("/users/logout", iSauthenticated, Userlogout);
+userRouter.post("/logout", iSauthenticated, Userlogout);
