@@ -25,7 +25,11 @@ hospitalRouter.get('/getallhospitals', getAllHospitals);
 hospitalRouter.get('/:hospitalname', getHospital);
 
 // Update a hospital
-hospitalRouter.patch('/updatehospitals/:id', updateHospital);
+hospitalRouter.patch('/:hospitalname', (req, res, next) => {
+    remoteUpload(req, res, (err) => {
+        if (err) { return handleUploadError(err, req, res, next); } next();
+    });
+}, updateHospital);
 
 // delete a hospital
-hospitalRouter.delete('/hospitals/:id', deleteHospital);
+hospitalRouter.delete('/:hospitalname', deleteHospital);
