@@ -18,7 +18,7 @@ export const addHospitalValidator = Joi.object({
     totaldoctors: Joi.number().required(),
     totalnurses: Joi.number().required(),
     totalemergencyUnits: Joi.number().required(),
-    image:Joi.string(),
+    image: Joi.string().allow(null, ''),
     morgue: Joi.boolean().required(),
     websiteLink: Joi.string().optional(),
     googleMapsLink: Joi.string().optional()
@@ -46,6 +46,6 @@ export const updateHospitalValidator = Joi.object({
     totaldoctors: Joi.number(),
     totalnurses: Joi.number(),
     totalemergencyUnits: Joi.number(),
-    image:Joi.string(),
+    image: Joi.string().allow(null, ''),
     morgue: Joi.boolean()
 });

@@ -1,37 +1,84 @@
 import { addHospitalValidator, updateHospitalValidator } from '../validation/hospital.validation.js';
-import {HospitalModel} from '../models/hospital.model.js';
+import { HospitalModel } from '../models/hospital.model.js';
 
 
+
+// export const addHospital = async (req, res, next) => {
+//     try {
+//       // Validate the request body
+//       const { error, value } = addHospitalValidator.validate(req.body);
+//       if (error) {
+//         return res.status(400).send(error.details[0].message);
+//       }
+
+//       // Destructure validated value
+//       const { hospitalname, hospitalemail } = value;
+
+//       // Check if a hospital with the same email already exists
+//       const existingHospital = await HospitalModel.findOne({ hospitalemail });
+//       if (existingHospital) {
+//         return res.status(409).send("Hospital with this email already exists");
+//       }
+
+//       // Create new hospital
+//       const newHospital = new HospitalModel(value);
+//       await newHospital.save();
+
+//       // Respond with success
+//       return res.status(201).json({ message: "Hospital added successfully", hospital: newHospital });
+//     } catch (err) {
+//       // Handle unexpected errors
+//       console.error("Error adding hospital:", err); // Log error for debugging
+//       return res.status(500).send("An error occurred while adding the hospital");
+//     }
+//   };
+const BASE_URL = 'https://savefiles.org/drive/folders/MTE3ODV8cGFkZA/';
 
 export const addHospital = async (req, res, next) => {
     try {
-      // Validate the request body
-      const { error, value } = addHospitalValidator.validate(req.body);
-      if (error) {
-        return res.status(400).send(error.details[0].message);
-      }
-  
-      // Destructure validated value
-      const { hospitalname, hospitalemail } = value;
-  
-      // Check if a hospital with the same email already exists
-      const existingHospital = await HospitalModel.findOne({ hospitalemail });
-      if (existingHospital) {
-        return res.status(409).send("Hospital with this email already exists");
-      }
-  
-      // Create new hospital
-      const newHospital = new HospitalModel(value);
-      await newHospital.save();
-  
-      // Respond with success
-      return res.status(201).json({ message: "Hospital added successfully", hospital: newHospital });
+
+        const imagePath = req.file ? req.file.filename : undefined;
+        const imageUrl = imagePath ? `${BASE_URL}${imagePath}` : undefined;
+
+        const hospitalData = {
+            ...req.body,
+            image: imageUrl,
+            bedsAvailable: Number(req.body.bedsAvailable),
+            totaldoctors: Number(req.body.totaldoctors),
+            totalnurses: Number(req.body.totalnurses),
+            totalemergencyUnits: Number(req.body.totalemergencyUnits),
+            morgue: req.body.morgue === 'true'
+        };
+
+        console.log('Hospital Data to be saved:', hospitalData);
+
+        // Validate the combined data
+        const { error, value } = addHospitalValidator.validate(hospitalData);
+        if (error) {
+            return res.status(400).send(error.details[0].message);
+        }
+
+        // Destructure validated value
+        const { hospitalname, hospitalemail } = value;
+
+        // Check if a hospital with the same email already exists
+        const existingHospital = await HospitalModel.findOne({ hospitalemail });
+        if (existingHospital) {
+            return res.status(409).send("Hospital with this email already exists");
+        }
+
+        // Create new hospital
+        const newHospital = new HospitalModel(value);
+        await newHospital.save();
+
+        // Respond with success
+        return res.status(201).json({ message: "Hospital added successfully", hospital: newHospital });
     } catch (err) {
-      // Handle unexpected errors
-      console.error("Error adding hospital:", err); // Log error for debugging
-      return res.status(500).send("An error occurred while adding the hospital");
+        // Handle unexpected errors
+        console.error("Error adding hospital:", err);
+        return res.status(500).send("An error occurred while adding the hospital");
     }
-  };
+};
 
 
 // export const getAllHospitals = async (req, res, next) => {
@@ -87,6 +134,7 @@ export const getAllHospitals = async (req, res, next) => {
             .populate('bedsAvailable')
             .populate('totalemergencyUnits')
             .populate('morgue')
+            .populate('image')
             .populate('websiteLink')
             .populate('googleMapsLink');
 
@@ -100,6 +148,7 @@ export const getAllHospitals = async (req, res, next) => {
             services: hospital.services,
             bedsAvailable: hospital.bedsAvailable,
             totalemergencyUnits: hospital.totalemergencyUnits,
+            image: hospital.image,
             morgue: hospital.morgue,
             websiteLink: hospital.websiteLink,
             googleMapsLink: hospital.googleMapsLink
@@ -168,6 +217,7 @@ export const getHospital = async (req, res, next) => {
             .populate('services')
             .populate('bedsAvailable')
             .populate('totalemergencyUnits')
+            .populate('image')
             .populate('morgue')
             .populate('websiteLink')
             .populate('googleMapsLink');
@@ -186,6 +236,7 @@ export const getHospital = async (req, res, next) => {
             services: hospital.services,
             bedsAvailable: hospital.bedsAvailable,
             totalemergencyUnits: hospital.totalemergencyUnits,
+            image: hospital.image,
             morgue: hospital.morgue,
             websiteLink: hospital.websiteLink,
             googleMapsLink: hospital.googleMapsLink
@@ -203,43 +254,121 @@ export const getHospital = async (req, res, next) => {
 
 export const updateHospital = async (req, res, next) => {
     try {
+        // Handle file upload if an image is provided
+        const imagePath = req.file ? req.file.filename : undefined;
+        const imageUrl = imagePath ? `${BASE_URL}${imagePath}` : undefined;
+
+        // Create an object to hold the updated data
+        const updateData = {
+            ...req.body,
+            image: imageUrl || req.body.image,  // Use the new image URL if available, otherwise keep the old one
+            bedsAvailable: req.body.bedsAvailable ? Number(req.body.bedsAvailable) : undefined,
+            totaldoctors: req.body.totaldoctors ? Number(req.body.totaldoctors) : undefined,
+            totalnurses: req.body.totalnurses ? Number(req.body.totalnurses) : undefined,
+            totalemergencyUnits: req.body.totalemergencyUnits ? Number(req.body.totalemergencyUnits) : undefined,
+            morgue: req.body.morgue === 'true' || req.body.morgue === true
+        };
+
+        console.log('Hospital Data to be updated:', updateData);
+
+
+
         const { value, error } = updateHospitalValidator.validate(req.body);
         if (error) {
             return res.status(422).json(error);
         }
 
         // Include image in the update if provided
-        if (req.body.image) {
-            value.image = req.body.image;
-        }
+        // if (req.body.image) {
+        //     value.image = req.body.image;
+        // }
 
-
-        const hospital = await HospitalModel.findByIdAndUpdate(req.params.id, value, { new: true })
+        // Use findOneAndUpdate with the hospital name
+        const hospital = await HospitalModel.findOneAndUpdate(
+            { hospitalname: req.params.hospitalname },  // Find by hospital name
+            value,
+            { new: true }
+        )
             .populate('totaldoctors', 'name specialization')
             .populate('totalnurses', 'name')
-            .populate('ambulances', 'vehiclenumber status');
+            .populate('image', 'image')
+        // .populate('ambulances', 'vehiclenumber status');
 
         if (!hospital) {
             return res.status(404).json({ message: 'Hospital not found' });
         }
 
-
-        // return response
-        res.status(200).json(hospital);
+        // Return response with success message
+        res.status(200).json({
+            message: 'Hospital updated successfully',
+            hospital: hospital
+        });
     } catch (error) {
         next(error);
     }
 };
 
+
+// export const updateHospital = async (req, res, next) => {
+//     try {
+//         const { value, error } = updateHospitalValidator.validate(req.body);
+//         if (error) {
+//             return res.status(422).json(error);
+//         }
+
+//         // Include image in the update if provided
+//         if (req.body.image) {
+//             value.image = req.body.image;
+//         }
+
+
+//         const hospital = await HospitalModel.findByIdAndUpdate(req.params.id, value, { new: true })
+//             .populate('totaldoctors', 'name specialization')
+//             .populate('totalnurses', 'name')
+//             .populate('ambulances', 'vehiclenumber status');
+
+//         if (!hospital) {
+//             return res.status(404).json({ message: 'Hospital not found' });
+//         }
+
+
+//         // return response
+//         res.status(200).json(hospital);
+//     } catch (error) {
+//         next(error);
+//     }
+// };
+
+// export const deleteHospital = async (req, res, next) => {
+//     try {
+//         const hospital = await HospitalModel.findOneAndDelete(req.params.id);
+//         if (!hospital) {
+//             return res.status(404).json({ message: 'Hospital not found' });
+//         }
+
+//         // return response
+//         res.status(200).json({ message: 'Hospital deleted successfully' });
+//     } catch (error) {
+//         next(error);
+//     }
+// };
 export const deleteHospital = async (req, res, next) => {
     try {
-        const hospital = await HospitalModel.findByIdAndDelete(req.params.id);
-        if (!hospital) {
+        const hospitalname = req.params.hospitalname;
+
+        const deletedHospital = await HospitalModel.findOneAndDelete({ hospitalname: hospitalname });
+
+        if (!deletedHospital) {
             return res.status(404).json({ message: 'Hospital not found' });
         }
 
-        // return response
-        res.status(200).json({ message: 'Hospital deleted successfully' });
+        res.status(200).json({
+            message: 'Hospital deleted successfully',
+            deletedHospital: {
+                hospitalname: deletedHospital.hospitalname,
+                // You can include other fields you want to return here
+            }
+        });
     } catch (error) {
         next(error);
     }
