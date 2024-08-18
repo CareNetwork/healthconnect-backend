@@ -32,7 +32,7 @@ import { HospitalModel } from '../models/hospital.model.js';
 //       return res.status(500).send("An error occurred while adding the hospital");
 //     }
 //   };
-const BASE_URL = 'https://savefiles.org/drive/folders/MTE3ODV8cGFkZA/';
+const BASE_URL = 'https://savefiles.org/drive/folders/MTE3ODV8cGFkZ/';
 
 export const addHospital = async (req, res, next) => {
     try {
@@ -252,47 +252,91 @@ export const getHospital = async (req, res, next) => {
 
 
 
+// export const updateHospital = async (req, res, next) => {
+//     try {
+
+//         const { value, error } = updateHospitalValidator.validate(req.body);
+//         if (error) {
+//             return res.status(422).json(error);
+//         }
+
+//         // Include image in the update if provided
+        
+
+//         // Use findOneAndUpdate with the hospital name
+//         const hospital = await HospitalModel.findOneAndUpdate(
+//             { hospitalname: req.params.hospitalname },  // Find by hospital name
+//             value,
+//             { new: true }
+//         )
+//             .populate('totaldoctors', 'name specialization')
+//             .populate('totalnurses', 'name')
+//             .populate('image', 'image')
+//         // .populate('ambulances', 'vehiclenumber status');
+
+//         if (!hospital) {
+//             return res.status(404).json({ message: 'Hospital not found' });
+//         }
+
+//         // Return response with success message
+//         res.status(200).json({
+//             message: 'Hospital updated successfully',
+//             hospital: hospital
+//         });
+//     } catch (error) {
+//         next(error);
+//     }
+// };
+
+
+
+
 export const updateHospital = async (req, res, next) => {
     try {
-        // Handle file upload if an image is provided
-        const imagePath = req.file ? req.file.filename : undefined;
-        const imageUrl = imagePath ? `${BASE_URL}${imagePath}` : undefined;
+        const hospitalname = req.params.hospitalname;
 
-        // Create an object to hold the updated data
+        // Handle image update if a new image is provided
+        let imageUrl;
+        if (req.file) {
+            const imagePath = req.file.filename;
+            imageUrl = `${BASE_URL}${imagePath}`;
+        }
+
+        // Prepare update data
         const updateData = {
-            ...req.body,
-            image: imageUrl || req.body.image,  // Use the new image URL if available, otherwise keep the old one
-            bedsAvailable: req.body.bedsAvailable ? Number(req.body.bedsAvailable) : undefined,
-            totaldoctors: req.body.totaldoctors ? Number(req.body.totaldoctors) : undefined,
-            totalnurses: req.body.totalnurses ? Number(req.body.totalnurses) : undefined,
-            totalemergencyUnits: req.body.totalemergencyUnits ? Number(req.body.totalemergencyUnits) : undefined,
-            morgue: req.body.morgue === 'true' || req.body.morgue === true
+            ...(req.body.hospitalname && { hospitalname: req.body.hospitalname }),
+            ...(req.body.phonenumber && { phonenumber: req.body.phonenumber }),
+            // ...(req.body.hospitalemail && { hospitalemail: req.body.hospitalemail }),
+            // ...(req.body.location && { location: req.body.location }),
+            ...(req.body.typeOfhospital && { typeOfhospital: req.body.typeOfhospital }),
+            ...(req.body.services && { services: req.body.services }),
+            ...(req.body.bedsAvailable && { bedsAvailable: Number(req.body.bedsAvailable) }),
+            ...(req.body.totaldoctors && { totaldoctors: Number(req.body.totaldoctors) }),
+            ...(req.body.totalnurses && { totalnurses: Number(req.body.totalnurses) }),
+            ...(req.body.totalemergencyUnits && { totalemergencyUnits: Number(req.body.totalemergencyUnits) }),
+            ...(imageUrl && { image: imageUrl }),
+            ...(req.body.morgue !== undefined && { morgue: req.body.morgue === 'true' }),
+            ...(req.body.websiteLink && { websiteLink: req.body.websiteLink }),
+            ...(req.body.googleMapsLink && { googleMapsLink: req.body.googleMapsLink }),
         };
+
+        // Remove undefined fields
+        Object.keys(updateData).forEach(key => updateData[key] === undefined && delete updateData[key]);
 
         console.log('Hospital Data to be updated:', updateData);
 
-
-
-        const { value, error } = updateHospitalValidator.validate(req.body);
+        // Validate the update data
+        const { error, value } = updateHospitalValidator.validate(updateData);
         if (error) {
             return res.status(422).json(error);
         }
 
-        // Include image in the update if provided
-        // if (req.body.image) {
-        //     value.image = req.body.image;
-        // }
-
         // Use findOneAndUpdate with the hospital name
         const hospital = await HospitalModel.findOneAndUpdate(
-            { hospitalname: req.params.hospitalname },  // Find by hospital name
+            { hospitalname: hospitalname },
             value,
-            { new: true }
-        )
-            .populate('totaldoctors', 'name specialization')
-            .populate('totalnurses', 'name')
-            .populate('image', 'image')
-        // .populate('ambulances', 'vehiclenumber status');
+            { new: true, runValidators: true }
+        );
 
         if (!hospital) {
             return res.status(404).json({ message: 'Hospital not found' });
@@ -304,40 +348,13 @@ export const updateHospital = async (req, res, next) => {
             hospital: hospital
         });
     } catch (error) {
+        console.error("Error updating hospital:", error);
         next(error);
     }
 };
 
 
-// export const updateHospital = async (req, res, next) => {
-//     try {
-//         const { value, error } = updateHospitalValidator.validate(req.body);
-//         if (error) {
-//             return res.status(422).json(error);
-//         }
 
-//         // Include image in the update if provided
-//         if (req.body.image) {
-//             value.image = req.body.image;
-//         }
-
-
-//         const hospital = await HospitalModel.findByIdAndUpdate(req.params.id, value, { new: true })
-//             .populate('totaldoctors', 'name specialization')
-//             .populate('totalnurses', 'name')
-//             .populate('ambulances', 'vehiclenumber status');
-
-//         if (!hospital) {
-//             return res.status(404).json({ message: 'Hospital not found' });
-//         }
-
-
-//         // return response
-//         res.status(200).json(hospital);
-//     } catch (error) {
-//         next(error);
-//     }
-// };
 
 // export const deleteHospital = async (req, res, next) => {
 //     try {
