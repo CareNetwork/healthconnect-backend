@@ -1,5 +1,5 @@
 import { Router } from "express";
-import { refreshToken } from "../middlewares/auth.js";
+import { refreshToken } from "../controllers/refreshtoken.controller.js";
 
 
 
@@ -8,4 +8,4 @@ import { refreshToken } from "../middlewares/auth.js";
 export const refreshTokenRouter = Router();
 
 
-refreshTokenRouter.post('/refreshtoken', refreshToken);
+refreshTokenRouter.post('/refresh-token', refreshToken);

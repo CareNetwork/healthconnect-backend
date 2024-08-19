@@ -82,42 +82,7 @@ export const iSauthenticated = async (req, res, next) => {
 
 
 
-export const refreshToken = async (req, res) => {
-  try {
-    const { refreshToken } = req.body;
 
-    if (!refreshToken) {
-      return res.status(401).json({ error: 'Refresh token required' });
-    }
-
-    const secretKey = process.env.JWT_PRIVATE_KEY;
-    if (!secretKey) {
-      throw new Error('JWT secret key is not defined');
-    }
-
-    // Verify the refresh token
-    let decoded;
-    try {
-      decoded = jwt.verify(refreshToken, secretKey);
-    } catch (err) {
-      return res.status(401).json({ error: 'Invalid refresh token' });
-    }
-
-    const Admin = await AdminModel.findById(decoded.id);
-    if (!Admin) {
-      return res.status(401).json({ error: 'Admin not found' });
-    }
-
-    // Generate a new access token
-    const newToken = jwt.sign({ id: Admin._id, role: Admin.role }, secretKey, { expiresIn: '1h' });
-
-
-    res.status(200).json({ token: newToken });
-  } catch (error) {
-    console.error('Token refresh error:', error.message);
-    res.status(500).json({ error: 'Internal server error' });
-  }
-};
 
 
 

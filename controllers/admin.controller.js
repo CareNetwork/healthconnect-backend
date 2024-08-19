@@ -77,7 +77,7 @@ export const token = async (req, res, next) => {
         const token = jwt.sign(
             { id: Admin._id, role: Admin.role },
             process.env.JWT_PRIVATE_KEY, 
-            { expiresIn: "1h" }
+            { expiresIn: "72h" }
         );
 
 

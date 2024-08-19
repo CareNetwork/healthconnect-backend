@@ -12,7 +12,7 @@ export const remoteUpload = multer({
   },
   fileFilter: (req, file, cb) => {
     // Accept images only
-    if (!file.originalname.match(/\.(jpg|jpeg|png|gif)$/)) {
+    if (!file.originalname.match(/\.(jpg|jpeg|png|webp|gif)$/)) {
       return cb(new Error('Only image files are allowed!'), false);
     }
     cb(null, true);
