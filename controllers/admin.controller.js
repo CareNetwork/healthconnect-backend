@@ -77,12 +77,19 @@ export const token = async (req, res, next) => {
         const token = jwt.sign(
             { id: Admin._id, role: Admin.role },
             process.env.JWT_PRIVATE_KEY, 
-            { expiresIn: "72h" }
+            { expiresIn: "1h" }
+        );
+
+
+        const refreshToken = jwt.sign(
+            { id: Admin._id, role: Admin.role },
+            process.env.JWT_PRIVATE_KEY, 
+            { expiresIn: "7d" }
         );
 
         res.status(200).json({
             message: 'You are successfully logged in',
-            accessToken: token,
+            accessToken: token, refreshToken,
             Admin: {
                 name: Admin.name,
                 username: Admin.username,

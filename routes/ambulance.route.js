@@ -9,7 +9,7 @@ export const ambulanceRouter = Router();
 
 
 // Add a new ambulance
-ambulanceRouter.post('/ambulances', addAmbulance);
+ambulanceRouter.post('/addambulance', addAmbulance);
 
 // Get all ambulances
 ambulanceRouter.get('/ambulances', getAllAmbulances);
