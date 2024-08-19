@@ -20,7 +20,11 @@ import { AmbulanceServiceModel } from '../models/ambulance.model.js';
 // };
 
 
-const BASE_URL = 'https://savefiles.org/drive/folders/MTE3ODV8cGFkZ/';
+const BASE_URL = 'https://savefiles.org/drive/s/Ti1dTmIpbSmJ3PnbOVf6hhDZnrh66u';
+
+
+// 
+
 
 
 export const addAmbulance = async (req, res, next) => {
@@ -30,31 +34,29 @@ export const addAmbulance = async (req, res, next) => {
 
         const ambulanceData = {
             ...req.body,
-            image: imageUrl,
-            drivername: req.body.drivername,
-            drivercontactnumber: req.body.drivercontactnumber,
-            address: req.body.address,
-            assignedHospital: req.body.assignedHospital ? req.body.assignedHospital : null,
-            serviceprovidercontactnumber: req.body.serviceprovidercontactnumber
+            image: imageUrl
 
         };
 
         console.log('Ambulance Data to be validated:', ambulanceData);
 
         // Validate the combined data
-        const { error, value } = addAmbulanceValidator.validate(ambulanceData);
+        const { error, value } = addAmbulanceValidator.validate(ambulanceData, { abortEarly: false });
         if (error) {
-            return res.status(400).send(error.details[0].message);
+            return res.status(400).json({ error: error.details.map(detail => detail.message) });
         }
+
 
         // Destructure validated value
         const { serviceprovider, serviceprovideremail, } = value;
 
-        // Check if an ambulance with the same email already exists
-        const existingAmbulance = await AmbulanceServiceModel.findOne({ serviceprovideremail });
-        if (existingAmbulance) {
-            return res.status(409).send("Ambulance service with this email already exists");
-        }
+
+       // Check if an ambulance with the same email already exists
+       const existingAmbulance = await AmbulanceServiceModel.findOne({ serviceprovider, serviceprovideremail });
+       if (existingAmbulance) {
+           return res.status(409).send("Ambulance service with this email already exists");
+       }
+
 
         // Create new ambulance
         const newAmbulance = new AmbulanceServiceModel(value);
@@ -65,7 +67,7 @@ export const addAmbulance = async (req, res, next) => {
     } catch (err) {
         // Handle unexpected errors
         console.error("Error adding ambulance:", err);
-        return res.status(500).send("An error occurred while adding the ambulance");
+        return res.status(500).json({ error: "An error occurred while adding the ambulance" });
     }
 };
 

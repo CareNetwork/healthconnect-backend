@@ -12,8 +12,9 @@ const ambulanceServiceSchema = new Schema({
     drivercontactnumber: { type: String, required: true },
     typeOfambulanceservice: { type: String, required: true, enum: ['Government', 'Private'] },
     address: { type: String, required: true },
+    location: { type: String, required: true },
     status: { type: String, enum: ['Available', 'On Call', 'Maintenance'], default: 'Available' },
-    assignedHospital: { type: Types.ObjectId, ref: 'Hospital' },
+    assignedHospital: { type: String },  
     image: { type: String },
     websiteLink: { type: String },
     googleMapsLink: { type: String }

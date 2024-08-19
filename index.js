@@ -49,8 +49,11 @@ app.use('/api/v1/admin', iSauthenticated, adminRouter);
 app.use("/api/v1/users", userRouter);
 app.use('/api/v1/hospitals', iSauthenticated, hospitalRouter);
 app.use('/api/v1/ambulances', iSauthenticated, ambulanceRouter);
-app.use('/api/v1/admin/refresh-token',  refreshTokenRouter);
-
+app.use('/api/v1/admin',  refreshTokenRouter);
+app.use((req, res, next) => {
+    console.log('Request Body:', req.body);
+    next();
+});
 
 
 
