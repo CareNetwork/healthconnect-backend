@@ -5,6 +5,7 @@ import { logout, signup, token } from "../controllers/admin.controller.js";
 
 
 
+
 // Define router
 export const adminRouter = Router();
 
@@ -13,3 +14,4 @@ export const adminRouter = Router();
   adminRouter.post("/signup", signup);
   adminRouter.post("/token",  token);
   adminRouter.post("/logout",  logout);
+  

@@ -14,6 +14,7 @@ import mongoose from "mongoose";
 import { ambulanceRouter } from "./routes/ambulance.route.js";
 import { hospitalRouter } from "./routes/hospital.route.js";
 import { iSauthenticated } from "./middlewares/auth.js";
+import { refreshTokenRouter } from "./routes/refreshTokenRoute.route.js";
 
 
 
@@ -48,6 +49,7 @@ app.use('/api/v1/admin', iSauthenticated, adminRouter);
 app.use("/api/v1/users", userRouter);
 app.use('/api/v1/hospitals', iSauthenticated, hospitalRouter);
 app.use('/api/v1/ambulances', iSauthenticated, ambulanceRouter);
+app.use('/api/v1/admin/refresh-token',  refreshTokenRouter);
 
 
 

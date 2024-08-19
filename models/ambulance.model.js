@@ -6,6 +6,7 @@ import { toJSON } from "@reis/mongoose-to-json";
 const ambulanceServiceSchema = new Schema({
     serviceprovider: { type: String, required: true },
     serviceprovidercontactnumber: { type: String, required: true },
+    serviceprovideremail: { type: String, required: true, unique: true },
     vehiclenumber: { type: String, required: true, unique: true },
     drivername: { type: String, required: true },
     drivercontactnumber: { type: String, required: true },
@@ -13,7 +14,7 @@ const ambulanceServiceSchema = new Schema({
     address: { type: String, required: true },
     status: { type: String, enum: ['Available', 'On Call', 'Maintenance'], default: 'Available' },
     assignedHospital: { type: Types.ObjectId, ref: 'Hospital' },
-    image: { type: String, default: 'https://savefiles.org/secure/uploads/15585?shareable_link=252' },
+    image: { type: String },
     websiteLink: { type: String },
     googleMapsLink: { type: String }
     
