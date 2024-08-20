@@ -54,7 +54,6 @@ export const token = async (req, res, next) => {
 
         const Admin = await AdminModel.findOne({
             $or: [
-                { username: value.username },
                 { email: value.email },
             ]
         });
