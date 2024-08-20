@@ -15,11 +15,12 @@ import { ambulanceRouter } from "./routes/ambulance.route.js";
 import { hospitalRouter } from "./routes/hospital.route.js";
 import { iSauthenticated } from "./middlewares/auth.js";
 import { refreshTokenRouter } from "./routes/refreshTokenRoute.route.js";
+import { restartServer } from "./restart.server.js";
 
 
 
 // Database connection
-dbConnection();
+// dbConnection();
 
 // create an express app
 const app = express();
@@ -41,15 +42,17 @@ app.use(
 );
 
 
-
+app.get("/api/v1/health", (req, res) => {
+    res.json({ status: "UP" });
+});
 
 
 // Apply admin authentication middleware
-app.use('/api/v1/admin',  adminRouter);
+app.use('/api/v1/admin', adminRouter);
 app.use("/api/v1/users", userRouter);
-app.use('/api/v1/hospitals',  hospitalRouter);
-app.use('/api/v1/ambulances',  ambulanceRouter);
-app.use('/api/v1/admin',  refreshTokenRouter);
+app.use('/api/v1/hospitals', hospitalRouter);
+app.use('/api/v1/ambulances', ambulanceRouter);
+app.use('/api/v1/admin', refreshTokenRouter);
 // app.use((req, res, next) => {
 //     console.log('Request Body:', req.body);
 //     next();
@@ -70,15 +73,33 @@ expressOasGenerator.handleResponses(app, {
 app.use((err, req, res, next) => {
     console.error(err.stack);
     res.status(500).send('Something broke!');
-  });
+});
 
 
-  expressOasGenerator.handleRequests();
-  app.use((req, res) => res.redirect('/api-docs/'));
-  app.use(errorHandler({log: false}));
+expressOasGenerator.handleRequests();
+app.use((req, res) => res.redirect('/api-docs/'));
+app.use(errorHandler({ log: false }));
+
+const reboot = async () => {
+    setInterval(restartServer, process.env.INTERVAL)
+};
 
 // Listen for incoming requests
-const PORT = process.env.PORT || 6010;
-app.listen(PORT, () => {
-    console.log(`App listening on port ${PORT}`);
-});
+dbConnection()
+  .then(() => {
+    const PORT = process.env.PORT || 6010;
+    app.listen(PORT, () => {
+      reboot()
+        .then(() => {
+          console.log('Server Restarted');
+        })
+        .catch(error => {
+          console.error('Error during reboot:', error);
+        });
+      console.log(`App is listening on port ${PORT}`);
+    });
+  })
+  .catch((err) => {
+    console.error('Database connection error:', err);
+    process.exit(-1);
+  });
