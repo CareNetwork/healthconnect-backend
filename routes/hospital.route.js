@@ -1,6 +1,7 @@
 import { Router } from "express";
 import { addHospital, deleteHospital, getAllHospitals, getHospital, updateHospital } from "../controllers/hospital.controller.js";
 import { remoteUpload, handleUploadError } from "../middlewares/uploads.js";
+import { iSauthenticated, authorized } from "../middlewares/auth.js";
 
 
 
@@ -10,7 +11,7 @@ export const hospitalRouter = Router();
 
 
 // Add a new hospital
-hospitalRouter.post('/addhospitals', (req, res, next) => {
+hospitalRouter.post('/addhospitals', iSauthenticated, authorized(['Admin']), (req, res, next) => {
     remoteUpload(req, res, (err) => {
         if (err) { return handleUploadError(err, req, res, next); } next();
     });
@@ -25,7 +26,7 @@ hospitalRouter.get('/getallhospitals', getAllHospitals);
 hospitalRouter.get('/:hospitalname', getHospital);
 
 // Update a hospital
-hospitalRouter.patch('/:hospitalname', (req, res, next) => {
+hospitalRouter.patch('/:hospitalname', iSauthenticated, authorized(['Admin']), (req, res, next) => {
     remoteUpload(req, res, (err) => {
         if (err) { return handleUploadError(err, req, res, next); } next();
     });

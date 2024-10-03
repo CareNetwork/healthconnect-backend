@@ -20,10 +20,10 @@ ambulanceRouter.post('/addambulance', (req, res, next) => {
 ambulanceRouter.get('/getallambulances', getAllAmbulances);
 
 // Get a specific ambulance
-ambulanceRouter.get('/:serviceprovider', getAmbulance);
+ambulanceRouter.get('/:Ambulancename', getAmbulance);
 
 // Update an ambulance
-ambulanceRouter.patch('/:serviceprovider', (req, res, next) => {
+ambulanceRouter.patch('/:Ambulancename', (req, res, next) => {
     remoteUpload(req, res, (err) => {
         if (err) { return handleUploadError(err, req, res, next); } next();
     });
