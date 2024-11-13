@@ -1,5 +1,51 @@
 import jwt from 'jsonwebtoken';
 import { AdminModel } from '../models/admin.model.js';
+import { UserModel } from '../models/user.model.js';
+import passport from 'passport';
+import { Strategy as GoogleStrategy } from 'passport-google-oauth20';
+import dotenv from 'dotenv';
+
+
+
+dotenv.config();
+
+
+
+const GOOGLE_CLIENT_ID = process.env.GOOGLE_CLIENT_ID;
+const GOOGLE_CLIENT_SECRET = process.env.GOOGLE_CLIENT_SECRET;
+
+if (!GOOGLE_CLIENT_ID || !GOOGLE_CLIENT_SECRET) {
+  console.error("Error: Google client ID or secret is missing in environment variables.");
+  process.exit(1);
+}
+
+// Initialize Google Strategy
+passport.use(new GoogleStrategy({
+  clientID: process.env.GOOGLE_CLIENT_ID,
+  clientSecret: process.env.GOOGLE_CLIENT_SECRET,
+    callbackURL: 'http://localhost:6010/api/v1/auth/google/callback',
+    passReqToCallback: true
+  },
+  function(accessToken, refreshToken, profile, cb) {
+    UserModel.findOrCreate({ googleId: profile.id }, function (err, user) {
+      return cb(err, user);
+    });
+  // (accessToken, refreshToken, profile, done) => {
+  //   // Placeholder for finding or creating a user in your database
+  //   return done(null, profile);
+  }
+));
+
+// Serialize user into session
+passport.serializeUser((user, done) => {
+  done(null, user);
+});
+
+// Deserialize user from session
+passport.deserializeUser((user, done) => {
+  done(null, user);
+});
+
 
 
 // authentication middleware

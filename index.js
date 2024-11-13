@@ -13,6 +13,8 @@ import expressOasGenerator from "express-oas-generator"
 import mongoose from "mongoose";
 import { ambulanceRouter } from "./routes/ambulance.route.js";
 import { hospitalRouter } from "./routes/hospital.route.js";
+import passport from "passport";
+import './middlewares/auth.js';
 import { iSauthenticated } from "./middlewares/auth.js";
 import { refreshTokenRouter } from "./routes/refreshTokenRoute.route.js";
 import { restartServer } from "./restart.server.js";
@@ -29,16 +31,38 @@ app.use(cors({ credentials: true, origin: '*' }));
 // Middleware
 app.use(express.json()); // This should come before route definitions
 
+
+
 app.use(
     session({
         secret: process.env.SESSION_SECRET,
         resave: false,
         saveUninitialized: true,
+        cookie: { secure: false }, // Set to true if using HTTPS
 
         store: MongoStore.create({
             mongoUrl: process.env.MONGO_URL,
         }),
     })
+);
+
+app.use(passport.initialize());
+app.use(passport.session());
+
+
+// Google Authentication Route
+app.get('/auth/google',
+  passport.authenticate('google', { scope: ['profile', 'email'] })
+);
+
+
+ // Google Callback Route
+ app.get('http://localhost:6010/api/v1/auth/google/callback', 
+  passport.authenticate('google', { failureRedirect: '/login' }),
+  (req, res) => {
+    // Successful authentication, redirect or send a response
+    res.redirect('/profile');
+  }
 );
 
 
