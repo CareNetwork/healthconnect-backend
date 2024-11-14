@@ -26,25 +26,41 @@ passport.use(new GoogleStrategy({
     callbackURL: 'http://localhost:6010/api/v1/auth/google/callback',
     passReqToCallback: true
   },
-  function(accessToken, refreshToken, profile, cb) {
-    UserModel.findOrCreate({ googleId: profile.id }, function (err, user) {
-      return cb(err, user);
-    });
-  // (accessToken, refreshToken, profile, done) => {
-  //   // Placeholder for finding or creating a user in your database
-  //   return done(null, profile);
+
+  // Google Mail Login
+async (accessToken, refreshToken, profile, done) => {
+  try {
+      let user = await UserModel.findOne({ googleId: profile.id });
+
+      if (!user) {
+          // Create a new user if one doesn't already exist
+          user = new UserModel({
+              googleId: profile.id,
+              firstname: profile.name.givenName,
+              lastname: profile.name.familyName,
+              email: profile.emails[0].value,
+              username: profile.displayName,
+          });
+          await user.save();
+      }
+
+      // Serialize user into session
+      passport.serializeUser((user, done) => {
+          done(null, user);
+      });
+
+      // Deserialize user from session
+      passport.deserializeUser((user, done) => {
+          done(null, user);
+      });
+
+      return done(null, user);
+  } catch (error) {
+      return done(error, false);
   }
+}
 ));
 
-// Serialize user into session
-passport.serializeUser((user, done) => {
-  done(null, user);
-});
-
-// Deserialize user from session
-passport.deserializeUser((user, done) => {
-  done(null, user);
-});
 
 
 
