@@ -2,7 +2,7 @@ import { UserModel } from "../models/user.model.js";
 import bcrypt from 'bcrypt';
 import jwt from 'jsonwebtoken';
 import { BlacklistedTokenModel } from "../models/blacklistedToken.model.js";
-import { AmbulanceServiceModel } from "../models/ambulance.model.js";
+// import { AmbulanceServiceModel } from "../models/ambulance.model.js";
 
 
 
@@ -11,6 +11,12 @@ import { AmbulanceServiceModel } from "../models/ambulance.model.js";
 export const Usersignup = async (req, res) => {
     try {
         const { firstname, lastname, username, email, password } = req.body;
+
+
+        // Only handle local signups with a password
+        if (!password) {
+            return res.status(400).json({ message: "Password is required for local signup" });
+        }
 
         // Validate input
         if (!firstname || !lastname || !username || !email || !password) {
@@ -101,6 +107,10 @@ export const Userlogin = async (req, res) => {
         res.status(500).json({ message: "Internal server error" });
     }
 };
+
+
+
+
 
 
 // export const getAllAmbulances = async (req, res, next) => {

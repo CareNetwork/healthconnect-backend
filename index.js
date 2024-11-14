@@ -57,11 +57,11 @@ app.get('/auth/google',
 
 
  // Google Callback Route
- app.get('http://localhost:6010/api/v1/auth/google/callback', 
+ app.get('http://localhost:6010/auth/google/callback', 
   passport.authenticate('google', { failureRedirect: '/login' }),
   (req, res) => {
     // Successful authentication, redirect or send a response
-    res.redirect('/profile');
+    res.redirect('/https://healthconnectdemo.netlify.app/');
   }
 );
 
