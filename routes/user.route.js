@@ -25,7 +25,7 @@ userRouter.get('/hospitals/getallhospitals', getAllHospitals);
 userRouter.get('/hospitals/:hospitalname', getHospital);
 
 // Get all ambulances with optional filtering
-userRouter.get('/ambulances', getAllAmbulances);
+userRouter.get('/ambulances/getallambulances', getAllAmbulances);
 
 // Get a specific ambulance
 userRouter.get('/ambulances/:serviceprovider', getAmbulance);
