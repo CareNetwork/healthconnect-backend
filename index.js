@@ -61,7 +61,7 @@ app.get('/auth/google',
   passport.authenticate('google', { failureRedirect: '/login' }),
   (req, res) => {
     // Successful authentication, redirect or send a response
-    res.redirect('/https://healthconnectdemo.netlify.app/');
+    res.redirect('https://healthconnectdemo.netlify.app/');
   }
 );
 
