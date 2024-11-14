@@ -28,7 +28,7 @@ userRouter.get('/hospitals/:hospitalname', getHospital);
 userRouter.get('/ambulances', getAllAmbulances);
 
 // Get a specific ambulance
-userRouter.get('/ambulances/:id', getAmbulance);
+userRouter.get('/ambulances/:serviceprovider', getAmbulance);
 
   // Logout route (protected)
 userRouter.post("/logout",  Userlogout);

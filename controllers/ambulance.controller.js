@@ -1,5 +1,5 @@
 import { addAmbulanceValidator, updateAmbulanceValidator } from '../validation/ambulance.validation.js';
-import { AmbulanceServiceModel } from '../models/ambulance.model.js';
+import { AmbulanceServiceModel } from '../models/ambulance.model.js'; 
 
 // export const addAmbulance = async (req, res, next) => {
 //     try {
