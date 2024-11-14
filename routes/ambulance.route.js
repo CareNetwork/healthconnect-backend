@@ -30,4 +30,4 @@ ambulanceRouter.patch('/:serviceprovider', (req, res, next) => {
 }, updateAmbulance);
 
 // Delete a ambulance
-ambulanceRouter.delete('/ambulances/:id', deleteAmbulance);
+ambulanceRouter.delete('/ambulances/:serviceprovider', deleteAmbulance);
